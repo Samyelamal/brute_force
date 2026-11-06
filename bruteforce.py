@@ -32,9 +32,11 @@ class Action:
         return f"{self.nom} | prix : {self.prix:.2f} € | gain : {self.gain():.2f} €"
 
 
-# Dans le fichier, le bénéfice est écrit avec un "%",
-# il faut l'enlever avant de convertir en nombre
 def lire_fichier(chemin):
+    """Lit le CSV et retourne la liste des actions.
+
+    Le bénéfice est écrit avec un "%" qu'il faut retirer avant la conversion.
+    """
     actions = []
     with open(chemin, newline="", encoding="utf-8") as fichier:
         lecteur = csv.reader(fichier)
@@ -61,6 +63,7 @@ def gain_total(actions):
 
 
 def force_brute(actions, budget):
+    """Teste toutes les combinaisons et retourne la plus rentable dans le budget."""
     meilleure_combinaison = []
     meilleur_gain = 0
 

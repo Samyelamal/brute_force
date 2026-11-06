@@ -9,7 +9,7 @@ pour chaque budget possible, le meilleur gain qu'on peut obtenir.
 Avant de lancer le calcul, le programme fait un petit rapport sur les données,
 car les fichiers historiques peuvent contenir des valeurs fausses.
 
-Utilisation : python3 optimized.py 
+Utilisation : python3 optimized.py
 """
 
 import csv
@@ -40,9 +40,12 @@ class Action:
         return f"{self.nom} | prix : {self.prix:.2f} € | gain : {self.gain():.2f} €"
 
 
-# Les fichiers n'ont pas tous le même format : dans certains le bénéfice
-# est écrit avec un "%", dans d'autres non. On enlève le "%" s'il y en a un.
 def lire_fichier(chemin):
+    """Lit le CSV et retourne la liste des actions.
+
+    Selon le fichier, le bénéfice est écrit avec ou sans "%" : on le retire s'il est présent.
+    Les lignes illisibles sont ignorées.
+    """
     actions = []
     with open(chemin, newline="", encoding="utf-8") as fichier:
         lecteur = csv.reader(fichier)
@@ -101,12 +104,14 @@ def afficher_rapport(actions):
                 print(f"    {action}")
 
 
-# On garde seulement les actions exploitables :
-# - un prix négatif ou nul n'a pas de sens
-# - un bénéfice nul ou négatif ne rapporte rien, inutile de l'acheter
-# - quand un nom apparaît deux fois avec des valeurs différentes, on ne sait
-#   pas laquelle est la bonne, donc on retire les deux par prudence
 def nettoyer(actions):
+    """Retourne uniquement les actions exploitables.
+
+    - un prix négatif ou nul n'a pas de sens ;
+    - un bénéfice nul ou négatif ne rapporte rien ;
+    - quand un nom apparaît deux fois, on ne sait pas quelle ligne est la bonne,
+      donc les deux sont retirées par prudence.
+    """
     doublons = trouver_doublons(actions)
     actions_valides = []
     for action in actions:
@@ -118,13 +123,16 @@ def nettoyer(actions):
     return actions_valides
 
 
-# On arrondit toujours au-dessus pour ne jamais sous-estimer un prix,
-# comme ça le vrai total dépensé ne peut pas dépasser le budget.
 def prix_en_unites(action):
+    """Convertit le prix en dixièmes d'euro, arrondi au-dessus.
+
+    Arrondir au-dessus évite de sous-estimer un prix : le total réel ne peut pas dépasser le budget.
+    """
     return math.ceil(round(action.prix * PRECISION, 2))
 
 
 def sac_a_dos(actions, budget):
+    """Résout le problème du sac à dos et retourne les actions retenues."""
     capacite = budget * PRECISION
 
     tableau = [[0] * (capacite + 1)]

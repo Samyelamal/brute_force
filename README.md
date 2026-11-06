@@ -25,9 +25,14 @@ standard de Python, il n'y a donc rien à installer.
 
 ## Lancer les programmes
 
-Ouvrir un terminal dans le dossier du projet, puis :
-
+```bash
+git clone https://github.com/Samyelamal/brute_force.git
+cd brute_force
 ```
+
+Puis :
+
+```bash
 python3 bruteforce.py
 python3 optimized.py
 python3 optimized.py "dataset2_Python+P7.csv"
@@ -61,3 +66,12 @@ arrondis au-dessus, ce qui garantit de ne jamais dépasser le budget.
 | dataset2 | optimized.py | 499,24 € | 197,69 € | environ 0,2 s |
 
 Les temps varient selon l'ordinateur utilisé.
+
+## Qualité du code
+
+Le code respecte la PEP 8, vérifiée avec flake8 :
+
+```bash
+pip install flake8
+flake8 --max-line-length=119
+```
